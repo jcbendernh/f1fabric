@@ -33,7 +33,7 @@
 # CELL ********************
 
 bronze_file_path = "Files/bronze/"
-silver_catalog_schema = "f1.silver"
+silver_schema = "f1.silver"
 
 # METADATA ********************
 
@@ -93,7 +93,7 @@ display(df_circuits)
 
 # CELL ********************
 
-df_circuits.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".circuits")
+df_circuits.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".circuits")
 
 # METADATA ********************
 
@@ -129,7 +129,7 @@ display(df_constructor_results)
 
 # CELL ********************
 
-df_constructor_results.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".constructor_results")
+df_constructor_results.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".constructor_results")
 
 # METADATA ********************
 
@@ -165,7 +165,7 @@ display(df_constructor_standings)
 
 # CELL ********************
 
-df_constructor_standings.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".constructor_standings")
+df_constructor_standings.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".constructor_standings")
 
 # METADATA ********************
 
@@ -201,7 +201,7 @@ display(df_constructors)
 
 # CELL ********************
 
-df_constructors.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".constructors")
+df_constructors.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".constructors")
 
 # METADATA ********************
 
@@ -236,7 +236,7 @@ display(df_driver_standings)
 
 # CELL ********************
 
-df_driver_standings.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".driver_standings")
+df_driver_standings.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".driver_standings")
 
 # METADATA ********************
 
@@ -271,7 +271,7 @@ display(df_drivers)
 
 # CELL ********************
 
-df_drivers.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".drivers")
+df_drivers.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".drivers")
 
 # METADATA ********************
 
@@ -306,7 +306,7 @@ display(df_lap_times)
 
 # CELL ********************
 
-df_lap_times.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".lap_times")
+df_lap_times.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".lap_times")
 
 # METADATA ********************
 
@@ -341,7 +341,7 @@ display(df_pit_stops)
 
 # CELL ********************
 
-df_pit_stops.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".pit_stops")
+df_pit_stops.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".pit_stops")
 
 # METADATA ********************
 
@@ -376,7 +376,7 @@ display(df_qualifying)
 
 # CELL ********************
 
-df_qualifying.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".qualifying")
+df_qualifying.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".qualifying")
 
 # METADATA ********************
 
@@ -411,7 +411,7 @@ display(df_races)
 
 # CELL ********************
 
-df_races.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".races")
+df_races.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".races")
 
 # METADATA ********************
 
@@ -451,7 +451,7 @@ display(df_results)
 
 # CELL ********************
 
-df_results.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".results")
+df_results.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".results")
 
 # METADATA ********************
 
@@ -486,7 +486,7 @@ display(df_seasons)
 
 # CELL ********************
 
-df_seasons.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".seasons")
+df_seasons.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".seasons")
 
 # METADATA ********************
 
@@ -521,7 +521,7 @@ display(df_sprint_results)
 
 # CELL ********************
 
-df_sprint_results.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".sprint_results")
+df_sprint_results.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".sprint_results")
 
 # METADATA ********************
 
@@ -556,7 +556,7 @@ display(df_status)
 
 # CELL ********************
 
-df_status.write.format("delta").mode("overwrite").saveAsTable(silver_catalog_schema + ".status")
+df_status.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".status")
 
 # METADATA ********************
 
