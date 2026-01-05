@@ -11,14 +11,14 @@ To get started, please perform the following:
 
 ## Fabric Workspace Components
 This repository contains the following items that will be deposited into your workspace once you perform the Update via Source Control referenced above.
-- F1 Lakehouse with schema enabled
-- Silver - All Tables: This notebook takes the .csv files that are uploaded to the Lakehouse files from Kaggle and transforms them into delta tables in the Silver schema.  There are two variables to update in the notebook to point to the information for your environment.
+- **F1** Lakehouse with schema enabled
+- **Silver - All Tables**: This notebook takes the .csv files that are uploaded to the Lakehouse files from Kaggle and transforms them into delta tables in the Silver schema.  There are two variables to update in the notebook to point to the information for your environment.
     1. bronze_file_path - Set this to match your bronze file path for you will deposit the Kaggle CSV files.
     2. silver_schema - Set this to match your LAKEHOUSE.SCHEMA for your silver delta tables.
-- Gold - All Tables: This notebook transforms all the tables into the Silver schema to delta tables that act as materialized views in the Gold schema.  There are two variables to update in the notebook to point to the information for your environment.
+- **Gold - All Tables**: This notebook transforms all the tables into the Silver schema to delta tables that act as materialized views in the Gold schema.  There are two variables to update in the notebook to point to the information for your environment.
     1. silver_schema - Set this to match your LAKEHOUSE.SCHEMA for your silver delta tables.
     2. gold_schema - Set this to match your LAKEHOUSE.SCHEMA for your gold delta tables.
-- f1_agent: This is a Fabric Data Agent that utilizes the tables in the f1.gold schema as it's data source.  It also includes comprehensive Data Source Description, Data Source Instructions, and Agent Instructions.   
+- **f1_agent**: This is a Fabric Data Agent that utilizes the tables in the f1.gold schema as it's data source.  It also includes comprehensive Data Source Description, Data Source Instructions, and Agent Instructions.   
 
 ## Kaggle F1 Data
 You will need to download the .zip file from the [kaggle - Formula 1 Race Data](https://www.kaggle.com/datasets/jtrotman/formula-1-race-data/data) web site.  It contains the following csv files.
@@ -42,7 +42,7 @@ Once these are downloaded and extracted on your local machine, you will need to 
 ###  Tips
 For this repo, I created the following items in my F1 lakehouse.  The notebooks and the f1_agent data agent references are based on these items.
 1. I created a bronze folder in my F1 Lakehouse Files and uploaded the csv files to this location.
-2. I created 2 schemes under the lakehouse:<BR>
+2. I created 2 schemas under the lakehouse:<BR>
     a. silver<BR>
     b. gold
 
@@ -56,4 +56,3 @@ You can also integrate this Fabric Data Agent with both AI Foundry and Copilot S
 
 ### Sample Architecture - Fabric Data Agents - AI Foundry (New Experience)
 ![Microsoft Fabric - AI Foundry](img/fabric-aifoundry.png)
-
