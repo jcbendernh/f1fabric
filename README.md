@@ -46,6 +46,16 @@ For this repo, I created the following items in my F1 lakehouse.  The notebooks 
     a. silver<BR>
     b. gold
 
+## Suggested Prompts / Sample Questions
+Below are some sample suggested prompts/sample questions we used to test the Fabric Data Agent and to demonstrate the integration within Copilot Studio and AI Foundry.
+- What are the constructor standings for 2025?
+- Which drivers finished on the podium in the last race?
+- Who won the United States Grand Prix in 2025?
+- Which drivers have the most wins this year?
+- Which drivers have the most wins in the last 10 years?
+- What are the constructor champions for the past 20 years?
+
+
 ## AI Foundry and Copilot Studio using the Fabric Data Agent
 You can also integrate this Fabric Data Agent with both AI Foundry and Copilot Studio.  For more on this topic check out the following articles:
 - [Fabric Data Agents + Microsoft Copilot Studio: A New Era of Multi-Agent Orchestration (Preview)](https://blog.fabric.microsoft.com/en-US/blog/fabric-data-agents-microsoft-copilot-studio-a-new-era-of-multi-agent-orchestration/)
