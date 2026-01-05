@@ -51,7 +51,7 @@ You can also integrate this Fabric Data Agent with both AI Foundry and Copilot S
 - [Fabric Data Agents + Microsoft Copilot Studio: A New Era of Multi-Agent Orchestration (Preview)](https://blog.fabric.microsoft.com/en-US/blog/fabric-data-agents-microsoft-copilot-studio-a-new-era-of-multi-agent-orchestration/)
 - {}() <br>
 ### Sample Architecture - Fabric Data Agents - Copilot Studio
-![Azure Databricks - Copilot Studio](img/dbx-copilotstudio.png)
+![Microsoft Fabric - Copilot Studio](img/fabric-copilotstudio.png)
 
 ### Sample Architecture - Fabric Data Agents - New AI Foundry
 ![Azure Databricks - AI Foundry](img/dbx-aifoundry.png)
