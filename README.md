@@ -56,4 +56,3 @@ You can also integrate this Fabric Data Agent with both AI Foundry and Copilot S
 
 ### Sample Architecture - Fabric Data Agents - AI Foundry (New Experience)
 ![Microsoft Fabric - AI Foundry](img/fabric-aifoundry.png)
-
