@@ -49,12 +49,11 @@ For this repo, I created the following items in my F1 lakehouse.  The notebooks 
 ## AI Foundry and Copilot Studio using the Fabric Data Agent
 You can also integrate this Fabric Data Agent with both AI Foundry and Copilot Studio.  For more on this topic check out the following articles:
 - [Fabric Data Agents + Microsoft Copilot Studio: A New Era of Multi-Agent Orchestration (Preview)](https://blog.fabric.microsoft.com/en-US/blog/fabric-data-agents-microsoft-copilot-studio-a-new-era-of-multi-agent-orchestration/)
-- {}() <br>
+- [Empowering agentic AI by integrating Fabric with Azure AI Foundry](https://blog.fabric.microsoft.com/en-us/blog/empowering-agentic-ai-by-integrating-fabric-with-azure-ai-foundry/) 
+
 ### Sample Architecture - Fabric Data Agents - Copilot Studio
-![](img/fabric-copilotstudio.png)
+![Microsoft Fabric - Copilot Studio](img/fabric-copilotstudio.png)
 
-### Sample Architecture - Fabric Data Agents - New AI Foundry
-![Azure Databricks - AI Foundry](img/dbx-aifoundry.png)
+### Sample Architecture - Fabric Data Agents - AI Foundry (New Experience)
+![Microsoft Fabric - AI Foundry](img/fabric-aifoundry.png)
 
-### Sample Architecture - Fabric Data Agents - Legacy AI Foundry  
-![Azure Databricks - Legacy AI Foundry via Visual Studio Code](img/dbx-aifoundrylegacy.png)
