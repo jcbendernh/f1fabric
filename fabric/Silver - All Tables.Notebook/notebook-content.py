@@ -27,6 +27,51 @@
 
 # MARKDOWN ********************
 
+# ## Notebook Overview
+# 
+# This notebook performs the **Bronze ➜ Silver** transformation for the Formula 1 dataset.
+# 
+# - **Input (Bronze):** CSV files stored in the default Lakehouse under `Files/bronze/`.
+# - **Output (Silver):** Delta tables written to the Lakehouse schema defined in the `silver_schema` variable (default: `f1.silver`).
+# - **Pattern:** For each source CSV, the notebook:
+#   - Reads the file from the bronze folder using Spark
+#   - Applies light data-quality and type-casting transformations where needed
+#   - Writes the result as a managed Delta table in the Silver layer.
+# 
+# > To repoint the notebook to a different environment, update:
+# > - `bronze_file_path` – to match your Bronze files location
+# > - `silver_schema` – to match your `<LAKEHOUSE>.<SCHEMA>` target for Silver tables.
+# 
+# 
+# ## Silver Tables Created
+# 
+# This notebook materializes the following **Silver** Delta tables in the schema defined by `silver_schema` (e.g. `f1.silver`):
+# 
+# - `circuits` – Circuit reference data with normalized `country` values (e.g., USA variants standardized to `USA`).
+# - `constructor_results` – Constructor results per race.
+# - `constructor_standings` – Constructor standings with `position` stored as integer.
+# - `constructors` – Constructor reference/master data.
+# - `driver_standings` – Driver standings per season and race.
+# - `drivers` – Driver reference/master data.
+# - `lap_times` – Lap times per race, driver, and lap.
+# - `pit_stops` – Pit stop events with `milliseconds` cast to integer.
+# - `qualifying` – Qualifying session results.
+# - `races` – Race calendar and metadata.
+# - `results` – Race results with `grid` cast to integer and `"\\N"` treated as nulls.
+# - `seasons` – Season reference data.
+# - `sprint_results` – Sprint race results with `statusId` cast to integer.
+# - `status` – Status lookup table (e.g., finished, accident, etc.).
+# 
+# Each table is stored in **Delta** format and can be queried via Spark or SQL using the fully qualified name:
+# 
+# ```sql
+# SELECT TOP 10 *
+# FROM <lakehouse_name>.silver.<table_name>;
+# ```
+
+
+# MARKDOWN ********************
+
 # - Set the bronze variable path to match your bronze file path. 
 # - Set the silver variable path to match your LAKEHOUSE.SCHEMA for your silver environment.
 
@@ -95,6 +140,8 @@ display(df_circuits)
 
 df_circuits.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".circuits")
 
+spark.sql(f"REFRESH TABLE {silver_schema}.circuits")
+
 # METADATA ********************
 
 # META {
@@ -131,6 +178,8 @@ display(df_constructor_results)
 
 df_constructor_results.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".constructor_results")
 
+spark.sql(f"REFRESH TABLE {silver_schema}.constructor_results")
+
 # METADATA ********************
 
 # META {
@@ -154,7 +203,13 @@ df_constructor_standings = (
     .load(volume_file_path)
 )
 
+from pyspark.sql.functions import col
+
+# Ensure position is an integer field
+df_constructor_standings = df_constructor_standings.withColumn("position", col("position").cast("int"))
+
 display(df_constructor_standings)
+
 
 # METADATA ********************
 
@@ -166,6 +221,8 @@ display(df_constructor_standings)
 # CELL ********************
 
 df_constructor_standings.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".constructor_standings")
+
+spark.sql(f"REFRESH TABLE {silver_schema}.constructor_standings")
 
 # METADATA ********************
 
@@ -203,6 +260,8 @@ display(df_constructors)
 
 df_constructors.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".constructors")
 
+spark.sql(f"REFRESH TABLE {silver_schema}.constructors")
+
 # METADATA ********************
 
 # META {
@@ -237,6 +296,8 @@ display(df_driver_standings)
 # CELL ********************
 
 df_driver_standings.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".driver_standings")
+
+spark.sql(f"REFRESH TABLE {silver_schema}.driver_standings")
 
 # METADATA ********************
 
@@ -273,6 +334,8 @@ display(df_drivers)
 
 df_drivers.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".drivers")
 
+spark.sql(f"REFRESH TABLE {silver_schema}.drivers")
+
 # METADATA ********************
 
 # META {
@@ -308,6 +371,8 @@ display(df_lap_times)
 
 df_lap_times.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".lap_times")
 
+spark.sql(f"REFRESH TABLE {silver_schema}.lap_times")
+
 # METADATA ********************
 
 # META {
@@ -324,13 +389,20 @@ df_lap_times.write.format("delta").mode("overwrite").saveAsTable(silver_schema +
 volume_file_path = bronze_file_path + "pit_stops.csv"
 
 df_pit_stops = (
-    spark.read.format("csv")
+    spark.read
+    .format("csv")
     .option("header", True)
     .option("inferSchema", True)
     .load(volume_file_path)
 )
 
+from pyspark.sql.functions import col
+
+# Cast milliseconds column to integer
+df_pit_stops = df_pit_stops.withColumn("milliseconds", col("milliseconds").cast("int"))
+
 display(df_pit_stops)
+
 
 # METADATA ********************
 
@@ -342,6 +414,8 @@ display(df_pit_stops)
 # CELL ********************
 
 df_pit_stops.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".pit_stops")
+
+spark.sql(f"REFRESH TABLE {silver_schema}.pit_stops")
 
 # METADATA ********************
 
@@ -378,6 +452,8 @@ display(df_qualifying)
 
 df_qualifying.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".qualifying")
 
+spark.sql(f"REFRESH TABLE {silver_schema}.qualifying")
+
 # METADATA ********************
 
 # META {
@@ -412,6 +488,8 @@ display(df_races)
 # CELL ********************
 
 df_races.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".races")
+
+spark.sql(f"REFRESH TABLE {silver_schema}.races")
 
 # METADATA ********************
 
@@ -453,6 +531,8 @@ display(df_results)
 
 df_results.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".results")
 
+spark.sql(f"REFRESH TABLE {silver_schema}.results")
+
 # METADATA ********************
 
 # META {
@@ -488,6 +568,8 @@ display(df_seasons)
 
 df_seasons.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".seasons")
 
+spark.sql(f"REFRESH TABLE {silver_schema}.seasons")
+
 # METADATA ********************
 
 # META {
@@ -510,7 +592,13 @@ df_sprint_results = (
     .load(volume_file_path)
 )
 
+from pyspark.sql.functions import col
+
+# Ensure statusId is an integer field
+df_sprint_results = df_sprint_results.withColumn("statusId", col("statusId").cast("int"))
+
 display(df_sprint_results)
+
 
 # METADATA ********************
 
@@ -522,6 +610,8 @@ display(df_sprint_results)
 # CELL ********************
 
 df_sprint_results.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".sprint_results")
+
+spark.sql(f"REFRESH TABLE {silver_schema}.sprint_results")
 
 # METADATA ********************
 
@@ -557,6 +647,8 @@ display(df_status)
 # CELL ********************
 
 df_status.write.format("delta").mode("overwrite").saveAsTable(silver_schema + ".status")
+
+spark.sql(f"REFRESH TABLE {silver_schema}.status")
 
 # METADATA ********************
 

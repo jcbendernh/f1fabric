@@ -27,6 +27,84 @@
 
 # MARKDOWN ********************
 
+# ## Notebook Overview
+# 
+# This notebook curates Formula 1 data from the **silver** layer into a cleaned and enriched **gold** layer in the `f1` lakehouse.
+# 
+# - **Inputs**: Delta tables in the silver schema (`f1.silver.*`), such as `circuits`, `races`, `drivers`, `constructors`, standings, results, and related reference tables.
+# - **Outputs**: Delta tables in the gold schema (`f1.gold.*`) for analytics and reporting.
+# - **Pattern**: For each domain (circuits, constructors, drivers, races, results, etc.), the notebook:
+#   - Reads the corresponding silver table(s)
+#   - Joins to reference tables to enrich with human‑readable names and attributes
+#   - Drops technical IDs and unused raw columns
+#   - Derives simple calculated fields (for example, converting milliseconds to seconds)
+#   - Writes the curated result as an overwrite to the gold schema
+# 
+# Use `silver_schema` and `gold_schema` at the top of the notebook to repoint this logic to a different lakehouse or schema if needed.
+
+# MARKDOWN ********************
+
+# ## Gold Tables Produced
+# 
+# The notebook writes the following curated gold tables (all in schema `f1.gold`):
+# 
+# - **`circuits`**  
+#   - Source: `f1.silver.circuits`  
+#   - Drops technical columns `alt`, `url`, `circuitRef`.
+# 
+# - **`constructor_results`**  
+#   - Source: `f1.silver.constructor_results` joined with `races` and `constructors`.  
+#   - Adds race name and year, constructor name; drops IDs (`raceId`, `constructorId`) and `status`.
+# 
+# - **`constructor_standings`**  
+#   - Source: `f1.silver.constructor_standings` joined with `races` and `constructors`.  
+#   - Adds race, year, date, constructor; drops IDs and `positionText`.
+# 
+# - **`constructors`**  
+#   - Source: `f1.silver.constructors`  
+#   - Drops `constructorRef` and `url`.
+# 
+# - **`driver_standings`**  
+#   - Source: `f1.silver.driver_standings` joined with `races` and `drivers`.  
+#   - Adds race, year, date, driver full name; drops IDs and `positionText`.
+# 
+# - **`drivers`**  
+#   - Source: `f1.silver.drivers`  
+#   - Creates `driver` full-name column and drops `code`, `url`, `driverRef`, `forename`, `surname`.
+# 
+# - **`lap_times`**  
+#   - Source: `f1.silver.lap_times` joined with `races` and `drivers`.  
+#   - Adds race, year, date, driver; derives `seconds` from `milliseconds`; drops technical IDs and raw timing columns.
+# 
+# - **`pit_stops`**  
+#   - Source: `f1.silver.pit_stops` joined with `races` and `drivers`.  
+#   - Adds race, year, driver; derives `seconds` from `milliseconds`; drops IDs and original timing fields.
+# 
+# - **`qualifying`**  
+#   - Source: `f1.silver.qualifying` joined with `races`, `drivers`, and `constructors`.  
+#   - Adds race, year, driver full name, constructor name; drops IDs and raw qualifying time columns (`q1`, `q2`, `q3`).
+# 
+# - **`races`**  
+#   - Source: `f1.silver.races` joined with `circuits`.  
+#   - Adds circuit name and country; drops technical IDs, URL, and practice/qualifying/sprint scheduling columns.
+# 
+# - **`results`**  
+#   - Source: `f1.silver.results` joined with `races`, `drivers`, `constructors`, and `status`.  
+#   - Adds race/season context, driver name, constructor name, and status; drops IDs and `positionText`.
+# 
+# - **`seasons`**  
+#   - Source: `f1.silver.seasons`  
+#   - Drops `url`.
+# 
+# - **`sprint_results`**  
+#   - Source: `f1.silver.sprint_results` joined with `races`, `drivers`, `constructors`, and `status`.  
+#   - Adds race/season context, driver and constructor names, and status; drops IDs and `positionText`.
+# 
+# These tables form the gold semantic layer for downstream analytics and reporting (for example, Power BI reports on drivers, constructors, races, lap times, and pit strategy).
+
+
+# MARKDOWN ********************
+
 # Set the variable paths to match your LAKEHOUSE.SCHEMA for both your silver and gold environment.
 
 # CELL ********************
@@ -62,6 +140,8 @@ display(df_circuits)
 
 df_circuits.write.mode("overwrite").saveAsTable(gold_schema + ".circuits")
 
+spark.sql(f"REFRESH TABLE {gold_schema}.circuits")
+
 # METADATA ********************
 
 # META {
@@ -96,6 +176,8 @@ display(df_constructor_results)
 
 df_constructor_results.write.mode("overwrite").saveAsTable(gold_schema + ".constructor_results")
 
+spark.sql(f"REFRESH TABLE {gold_schema}.constructor_results")
+
 # METADATA ********************
 
 # META {
@@ -128,6 +210,8 @@ display(df_constructor_standings)
 
 df_constructor_standings.write.mode("overwrite").saveAsTable(gold_schema + ".constructor_standings")
 
+spark.sql(f"REFRESH TABLE {gold_schema}.constructor_standings")
+
 # METADATA ********************
 
 # META {
@@ -155,6 +239,8 @@ display(df_constructors)
 # CELL ********************
 
 df_constructors.write.mode("overwrite").saveAsTable(gold_schema + ".constructors")
+
+spark.sql(f"REFRESH TABLE {gold_schema}.constructors")
 
 # METADATA ********************
 
@@ -198,6 +284,8 @@ display(df_driver_standings)
 
 df_driver_standings.write.mode("overwrite").saveAsTable(gold_schema + ".driver_standings")
 
+spark.sql(f"REFRESH TABLE {gold_schema}.driver_standings")
+
 # METADATA ********************
 
 # META {
@@ -228,6 +316,8 @@ display(df_drivers)
 # CELL ********************
 
 df_drivers.write.mode("overwrite").saveAsTable(gold_schema + ".drivers")
+
+spark.sql(f"REFRESH TABLE {gold_schema}.drivers")
 
 # METADATA ********************
 
@@ -264,6 +354,8 @@ display(df_lap_times)
 # CELL ********************
 
 df_lap_times.write.mode("overwrite").saveAsTable(gold_schema + ".lap_times")
+
+spark.sql(f"REFRESH TABLE {gold_schema}.lap_times")
 
 # METADATA ********************
 
@@ -307,6 +399,8 @@ display(df_pit_stops)
 # CELL ********************
 
 df_pit_stops.write.mode("overwrite").saveAsTable(gold_schema + ".pit_stops")
+
+spark.sql(f"REFRESH TABLE {gold_schema}.pit_stops")
 
 # METADATA ********************
 
@@ -353,6 +447,8 @@ display(df_qualifying)
 
 df_qualifying.write.mode("overwrite").saveAsTable(gold_schema + ".qualifying")
 
+spark.sql(f"REFRESH TABLE {gold_schema}.qualifying")
+
 # METADATA ********************
 
 # META {
@@ -386,6 +482,8 @@ display(df_races)
 # CELL ********************
 
 df_races.write.mode("overwrite").saveAsTable(gold_schema + ".races")
+
+spark.sql(f"REFRESH TABLE {gold_schema}.races")
 
 # METADATA ********************
 
@@ -435,6 +533,8 @@ display(df_results)
 
 df_results.write.mode("overwrite").saveAsTable(gold_schema + ".results")
 
+spark.sql(f"REFRESH TABLE {gold_schema}.results")
+
 # METADATA ********************
 
 # META {
@@ -463,6 +563,8 @@ display(df_seasons)
 # CELL ********************
 
 df_seasons.write.mode("overwrite").saveAsTable(gold_schema + ".seasons")
+
+spark.sql(f"REFRESH TABLE {gold_schema}.seasons")
 
 # METADATA ********************
 
@@ -508,6 +610,8 @@ display(df_sprint_results)
 # CELL ********************
 
 df_sprint_results.write.mode("overwrite").saveAsTable(gold_schema + ".sprint_results")
+
+spark.sql(f"REFRESH TABLE {gold_schema}.sprint_results")
 
 # METADATA ********************
 
