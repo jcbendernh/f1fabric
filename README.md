@@ -21,7 +21,7 @@ This repository contains the following items that will be deposited into your wo
 - **f1_agent**: This is a Fabric Data Agent that utilizes the tables in the f1.gold schema as it's data source.  It also includes comprehensive Data Source Description, Data Source Instructions, and Agent Instructions.   
 
 ## Kaggle F1 Data
-The beginning cells of the **Silver - All Tables** notebook download the following .csv files to your bronze volume from the [kaggle - Formula 1 Race Data](https://www.kaggle.com/datasets/jtrotman/formula-1-race-data/data) web site.
+The beginning cells of the **Silver - All Tables** notebook download the following .csv files to your bronze file path from the [kaggle - Formula 1 Race Data](https://www.kaggle.com/datasets/jtrotman/formula-1-race-data/data) web site.
 - circuits.csv
 - constructor_results.csv
 - constructor_standings.csv
