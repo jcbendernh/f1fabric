@@ -12,7 +12,7 @@ To get started, please perform the following:
 ## Fabric Workspace Components
 This repository contains the following items that will be deposited into your workspace once you perform the Update via Source Control referenced above.
 - **F1** Lakehouse with schema enabled
-- **Silver - All Tables**: This notebook takes the .csv files that are uploaded to the Lakehouse files from Kaggle and transforms them into delta tables in the Silver schema.  There are two variables to update in the notebook to point to the information for your environment.
+- **Silver - All Tables**: This notebook downloads the .csv files to the bronze file path from Kaggle and transforms them into delta tables in the Silver catalog.  There are two variables to update in the notebook to point to the information for your environment
     1. bronze_file_path - Set this to match your bronze file path for you will deposit the Kaggle CSV files.
     2. silver_schema - Set this to match your LAKEHOUSE.SCHEMA for your silver delta tables.
 - **Gold - All Tables**: This notebook transforms all the tables into the Silver schema to delta tables that act as materialized views in the Gold schema.  There are two variables to update in the notebook to point to the information for your environment.
@@ -21,7 +21,7 @@ This repository contains the following items that will be deposited into your wo
 - **f1_agent**: This is a Fabric Data Agent that utilizes the tables in the f1.gold schema as it's data source.  It also includes comprehensive Data Source Description, Data Source Instructions, and Agent Instructions.   
 
 ## Kaggle F1 Data
-You will need to download the .zip file from the [kaggle - Formula 1 Race Data](https://www.kaggle.com/datasets/jtrotman/formula-1-race-data/data) web site.  It contains the following csv files.
+The beginning cells of the **Silver - All Tables** notebook download the following .csv files to your bronze volume from the [kaggle - Formula 1 Race Data](https://www.kaggle.com/datasets/jtrotman/formula-1-race-data/data) web site.
 - circuits.csv
 - constructor_results.csv
 - constructor_standings.csv
@@ -37,7 +37,6 @@ You will need to download the .zip file from the [kaggle - Formula 1 Race Data](
 - sprint_results.csv
 - status.csv
 
-Once these are downloaded and extracted on your local machine, you will need to upload the csv files to Files section of the F1 lakehouse within your Fabric workspace so that they can be utilized by the Fabric Notebooks in the next section.
 
 ###  Tips
 For this repo, I created the following items in my F1 lakehouse.  The notebooks and the f1_agent data agent references are based on these items.
