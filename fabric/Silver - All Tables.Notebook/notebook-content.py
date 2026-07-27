@@ -75,10 +75,61 @@
 # - Set the bronze variable path to match your bronze file path. 
 # - Set the silver variable path to match your LAKEHOUSE.SCHEMA for your silver environment.
 
+# MARKDOWN ********************
+
+# %md
+# ### Data Ingestion from Kaggle
+# Installs the `kagglehub` package and downloads the [Formula 1 Race Data](https://www.kaggle.com/datasets/jtrotman/formula-1-race-data) dataset. All CSV files from the dataset are copied into the bronze path defined above, making them available for downstream silver-layer processing.
+
+# CELL ********************
+
+import subprocess
+subprocess.run(["pip", "install", "kagglehub"])
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 bronze_file_path = "Files/bronze/"
 silver_schema = "f1.silver"
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
+# CELL ********************
+
+import kagglehub
+import os
+
+# Download dataset (requires KAGGLE_USERNAME and KAGGLE_KEY env vars, or ~/.kaggle/kaggle.json)
+dataset_path = kagglehub.dataset_download("jtrotman/formula-1-race-data")
+
+# Ensure the bronze folder exists in the Lakehouse Files area
+bronze_dir = bronze_file_path.rstrip("/")
+if not notebookutils.fs.exists(bronze_dir):
+    notebookutils.fs.mkdirs(bronze_dir)
+
+# Copy all CSV files from local download folder to the Lakehouse bronze volume
+for file_name in os.listdir(dataset_path):
+    if file_name.endswith(".csv"):
+        src = os.path.join(dataset_path, file_name)
+        with open(src, "r", encoding="utf-8") as f:
+            content = f.read()
+        target_path = f"{bronze_dir}/{file_name}"
+        notebookutils.fs.put(target_path, content, True)
+        print(f"Copied: {file_name} -> {target_path}")
+
+print(f"\nAll CSV files copied to {bronze_dir}")
+
 
 # METADATA ********************
 
